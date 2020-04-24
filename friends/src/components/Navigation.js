@@ -2,7 +2,6 @@ import React from "react";
 import { List, ListItem } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 
-import "../scss/App.scss";
 import TokenContext from "../contexts/TokenContext";
 
 export default function Navigation() {

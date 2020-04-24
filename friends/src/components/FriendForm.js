@@ -4,7 +4,7 @@ import { TextField, Button, ButtonGroup } from "@material-ui/core";
 const initialState = {
   name: "",
   age: "",
-  height: "",
+  email: "",
   editingExisting: false,
   id: null,
 };
@@ -55,9 +55,9 @@ export default class FriendForm extends React.Component {
         />
         <TextField
           required
-          label="Height"
-          name="height"
-          value={this.state.height}
+          label="Email address"
+          name="email"
+          value={this.state.email}
           onChange={this.handleChange}
         />
         <ButtonGroup>
