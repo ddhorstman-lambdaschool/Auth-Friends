@@ -1,27 +1,27 @@
 import React from "react";
 
 import axiosWithAuth from "../utils/axiosWithAuth";
-import { Container } from "@material-ui/core";
+import { Container, LinearProgress } from "@material-ui/core";
 
 import FriendCard from "./FriendCard";
 
-export default class FriendsList extends React.Component {
-    state = {
-        friends: [],
-    };
-    componentDidMount() {
-        axiosWithAuth
-            .get("friends")
-            .then(r => this.setState({ friends: r.data }));
-    }
+export default function FriendsList() {
+  const [friends, setFriends] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+  React.useEffect(() => {
+    axiosWithAuth
+      .get("friends")
+      .then(r => setFriends(r.data))
+      .then(() => setIsLoading(false));
+  }, []);
 
-    render() {
-        return (
-            <Container>
-                {this.state.friends.map(friend => (
-                    <FriendCard key={friend.id} {...friend} />
-                ))}
-            </Container>
-        );
-    }
+  return isLoading ? (
+    <LinearProgress />
+  ) : (
+    <Container>
+      {friends.map(friend => (
+        <FriendCard key={friend.id} {...friend} />
+      ))}
+    </Container>
+  );
 }
