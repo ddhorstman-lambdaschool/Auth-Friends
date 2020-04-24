@@ -1,45 +1,55 @@
 import React from "react";
 
-import axiosWithAuth from "../utils/axiosWithAuth";
-import { CancelToken, isCancel } from "axios";
+import { axiosWithAuthCancellable } from "../utils/axiosWithAuth";
 import { Container, LinearProgress } from "@material-ui/core";
 
 import FriendCard from "./FriendCard";
 
-export default function FriendsList() {
-  const [friends, setFriends] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
+export default class FriendsList extends React.Component {
+  state = {
+    friends: [],
+    isLoading: true,
+  };
 
-  React.useEffect(() => {
-    let unmounted = false;
-    let source = CancelToken.source();
+  componentDidMount() {
+    const {
+      unmounted,
+      isCancel,
+      axiosWithAuth,
+      cancelAPICall,
+    } = axiosWithAuthCancellable();
+    this.cancelAPICall = cancelAPICall.bind(this);
 
     axiosWithAuth()
-      .get("friends", {
-        cancelToken: source.token,
-      })
+      .get("friends")
       .then(r => {
-        if (unmounted) return;
-        setFriends(r.data);
-        setIsLoading(false);
+        if (unmounted()) return;
+        this.setState({ friends: r.data });
+        this.setState({ isLoading: false });
       })
       .catch(e => {
-        !unmounted && setIsLoading(false);
+        !unmounted() && this.setState({ isLoading: false });
         isCancel(e) ? console.log(e.message) : console.error(e);
       });
-    return () => {
-      unmounted = true;
-      source.cancel("FriendsList data fetching cancelled.");
-    };
-  }, []);
+  }
 
-  return isLoading ? (
-    <LinearProgress />
-  ) : (
-    <Container className="friends-list">
-      {friends.map(friend => (
-        <FriendCard key={friend.id} {...friend} setFriends={setFriends} />
-      ))}
-    </Container>
-  );
+  componentWillUnmount() {
+    this.cancelAPICall();
+  }
+
+  render() {
+    return this.state.isLoading ? (
+      <LinearProgress />
+    ) : (
+      <Container className="friends-list">
+        {this.state.friends.map(friend => (
+          <FriendCard
+            key={friend.id}
+            {...friend}
+            setFriends={friends => this.setState({ friends })}
+          />
+        ))}
+      </Container>
+    );
+  }
 }

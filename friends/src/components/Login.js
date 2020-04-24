@@ -8,7 +8,7 @@ import {
   ButtonGroup,
 } from "@material-ui/core";
 
-import axiosWithAuth from "../utils/axiosWithAuth";
+import { axiosWithoutAuth } from "../utils/axiosWithAuth";
 import TokenContext from "../contexts/TokenContext";
 
 const initialState = {
@@ -33,7 +33,7 @@ export default class Login extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    axiosWithAuth()
+    axiosWithoutAuth()
       .post("login", this.state)
       //.then(r => {console.log(r); return r;})
       .then(res => this.setToken(res.data.payload))
