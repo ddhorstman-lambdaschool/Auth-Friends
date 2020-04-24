@@ -6,12 +6,19 @@ const baseURL = "http://localhost:5000/api/";
  * A function to perform axios calls which automatically include
  * an authorization token specified by the "token" key in
  * localStorage.
- * This version expects the token to be a JSON-encoded string.
  * @param {object} [options] The options to be passed to axios.create()
  */
 export function axiosWithAuth(options) {
-  const token = JSON.parse(localStorage.getItem("token"));
-
+  let token = null;
+  try {
+    //Search for a stringified token, such as one created by useLocalStorage.
+    token = JSON.parse(localStorage.getItem("token"));
+    //console.log(`Found stringified token in localStorage: ${token}`);
+  } catch {
+    //Fall back on a non-stringified token.
+    token = localStorage.getItem("token");
+    //console.log(`Found non-stringified token in localStorage: ${token}`);
+  }
   return axios.create({
     baseURL,
     headers: {
@@ -37,7 +44,6 @@ export function axiosWithoutAuth(options) {
  * an authorization token specified by the "token" key in
  * localStorage as well as the ability to cancel the call
  * if the component unmounts.
- * This version expects the token to be a JSON-encoded string.
  * @param {object} [options] The options to pass on to axios.create()
  */
 export function axiosWithAuthCancellable(options) {
