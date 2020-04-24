@@ -13,6 +13,7 @@ import axiosWithAuth from "../utils/axiosWithAuth";
 
 export default function FriendCard(props) {
   const [editing, setEditing] = React.useState(false);
+  const [error, setError] = React.useState(null);
   const [state, setState] = React.useState(props);
   function toggleEditing() {
     setEditing(!editing);

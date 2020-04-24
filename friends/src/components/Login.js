@@ -14,6 +14,7 @@ import TokenContext from "../contexts/TokenContext";
 const initialState = {
   username: "",
   password: "",
+  error: null,
 };
 
 export default class Login extends React.Component {
@@ -27,6 +28,7 @@ export default class Login extends React.Component {
 
   handleChange = ({ target: { name, value } }) => {
     this.setState({ [name]: value });
+    this.setState({ error: null });
   };
 
   handleSubmit = e => {
@@ -36,7 +38,7 @@ export default class Login extends React.Component {
       //.then(r => {console.log(r); return r;})
       .then(res => this.setToken(res.data.payload))
       .then(() => this.props.history.push("/friends"))
-      .catch(console.error);
+      .catch(({ message }) => this.setState({ error: message }));
   };
 
   handleReset = e => {
@@ -51,6 +53,7 @@ export default class Login extends React.Component {
             <Typography variant="h3">Log in</Typography>
             <TextField
               required
+              error={!!this.state.error}
               label="Username"
               name="username"
               value={this.state.username}
@@ -58,11 +61,13 @@ export default class Login extends React.Component {
             />
             <TextField
               required
+              error={!!this.state.error}
               label="Password"
               name="password"
               type="password"
               value={this.state.password}
               onChange={this.handleChange}
+              helperText={this.state.error && "Incorrect username or password"}
             />
             <ButtonGroup>
               <Button variant="contained" type="submit" color="primary">

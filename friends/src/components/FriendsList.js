@@ -1,7 +1,7 @@
 import React from "react";
 
 import axiosWithAuth from "../utils/axiosWithAuth";
-import axios from "axios";
+import { CancelToken, isCancel } from "axios";
 import { Container, LinearProgress } from "@material-ui/core";
 
 import FriendCard from "./FriendCard";
@@ -9,9 +9,10 @@ import FriendCard from "./FriendCard";
 export default function FriendsList() {
   const [friends, setFriends] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
+
   React.useEffect(() => {
     let unmounted = false;
-    let source = axios.CancelToken.source();
+    let source = CancelToken.source();
 
     axiosWithAuth()
       .get("friends", {
@@ -24,9 +25,7 @@ export default function FriendsList() {
       })
       .catch(e => {
         !unmounted && setIsLoading(false);
-        axios.isCancel(e)
-          ? console.log(e.message)
-          : console.error(e);
+        isCancel(e) ? console.log(e.message) : console.error(e);
       });
     return () => {
       unmounted = true;

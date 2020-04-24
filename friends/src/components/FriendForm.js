@@ -29,7 +29,7 @@ export default class FriendForm extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.submitForm(this.state);
+    this.props.submitForm(this.state)
     this.handleReset();
   };
 
@@ -41,6 +41,7 @@ export default class FriendForm extends React.Component {
         style={{ display: "flex", flexDirection: "column" }}
       >
         <TextField
+          error={!!this.props.error}
           required
           label="Name"
           name="name"
@@ -48,6 +49,7 @@ export default class FriendForm extends React.Component {
           onChange={this.handleChange}
         />
         <TextField
+          error={!!this.props.error}
           required
           label="Age"
           name="age"
@@ -55,6 +57,8 @@ export default class FriendForm extends React.Component {
           onChange={this.handleChange}
         />
         <TextField
+          error={!!this.props.error}
+          helperText={this.props.error && "An error ocurred."}
           required
           label="Email address"
           name="email"
