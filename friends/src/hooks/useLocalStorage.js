@@ -10,11 +10,17 @@ import React from "react";
 export default function useLocalStorage(key, initialValue = null) {
   const [value, setValue] = React.useState(() => {
     const item = window.localStorage.getItem(key);
-    //null indicates the item wasn't found by
-    if (item === null || item === undefined) {
+    //null indicates that no item exists for that key
+    if (item === null) {
       window.localStorage.setItem(key, JSON.stringify(initialValue));
       return initialValue;
-    } else return JSON.parse(item);
+    }
+    try {
+      return JSON.parse(item);
+    } catch {
+      console.error(`Existing item found in localStorage under "${key}", but it could not be parsed successfully. Run localStorage.clear() and try again.`);
+      return initialValue;
+    }
   });
   /**
    * Updates the value both in useState (internally) and localStorage.

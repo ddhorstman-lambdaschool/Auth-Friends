@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const baseURL = "http://localhost:5000/api/";
+
 /**
  * Create an axios instance which automatically includes
  * an authorization token specified by the "token" key in
@@ -58,7 +59,7 @@ export function axiosWithAuthCancellable(options) {
  * This version expects the token to be a JSON-encoded string.
  * @param {object} options The options to be passed to axios.create()
  */
-export default function axiosWithAuth(options) {
+export function axiosWithAuth(options) {
   if (!options) options = {};
   const token = JSON.parse(localStorage.getItem("token"));
 
@@ -83,3 +84,5 @@ export function axiosWithoutAuth(options) {
     ...options,
   });
 }
+
+export default axiosWithAuth;
