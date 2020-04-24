@@ -5,7 +5,7 @@ import React from "react";
  * adding data persistence.
  * NOTE: All values will be stringified, be careful when accessing them directly.
  * @param {string} key The key to be used in localStorage
- * @param {any} initialValue (Optional) The initial value
+ * @param {any} [initialValue] (Optional) The initial value
  */
 export default function useLocalStorage(key, initialValue = null) {
   const [value, setValue] = React.useState(() => {

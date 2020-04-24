@@ -8,11 +8,11 @@ const baseURL = "http://localhost:5000/api/";
  * localStorage as well as the ability to cancel the call
  * if the component unmounts.
  * This version expects the token to be a JSON-encoded string.
- * @param {object} options The options to pass on to axios.create()
+ * @param {object} [options] The options to pass on to axios.create()
  */
 export function axiosWithAuthCancellable(options) {
-  if (!options) options = {};
   const token = JSON.parse(localStorage.getItem("token"));
+
   let unmountedInternal = false;
   let source = axios.CancelToken.source();
   /**
@@ -37,13 +37,14 @@ export function axiosWithAuthCancellable(options) {
       baseURL,
       cancelToken: source.token,
       headers: {
+        ...options?.headers,
         Authorization: token,
       },
       ...options,
     });
 
   return {
-    ...axios,
+    isCancel: axios.isCancel,
     /**
      * @returns {boolean} Whether the component has been unmounted
      */
@@ -57,15 +58,15 @@ export function axiosWithAuthCancellable(options) {
  * an authorization token specified by the "token" key in
  * localStorage.
  * This version expects the token to be a JSON-encoded string.
- * @param {object} options The options to be passed to axios.create()
+ * @param {object} [options] The options to be passed to axios.create()
  */
 export function axiosWithAuth(options) {
-  if (!options) options = {};
   const token = JSON.parse(localStorage.getItem("token"));
 
   return axios.create({
     baseURL,
     headers: {
+      ...options?.headers,
       Authorization: token,
     },
     ...options,
@@ -74,11 +75,9 @@ export function axiosWithAuth(options) {
 /**
  * A function to perform axios calls similarly to axiosWithAuth,
  * but without automatically including an authorization token.
- * @param {object} options The options to be passed to axios.create()
+ * @param {object} [options] The options to be passed to axios.create()
  */
 export function axiosWithoutAuth(options) {
-  if (!options) options = {};
-
   return axios.create({
     baseURL,
     ...options,
