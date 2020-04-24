@@ -24,10 +24,10 @@ export default function App() {
         <Navigation />
         <Switch>
           <PrivateRoute exact path="/friends" component={FriendsList} />
-          <Route exact path="/new" component={AddFriend} />
+          <PrivateRoute exact path="/new" component={AddFriend} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/logout" component={Logout} />
-          <Redirect to="/login" />
+          <Redirect to={token ? "/friends" : "/login"} />
         </Switch>
       </Router>
     </TokenContext.Provider>

@@ -2,6 +2,7 @@ import React from "react";
 import FriendForm from "./FriendForm";
 import axiosWithAuth from "../utils/axiosWithAuth";
 import { Container } from "@material-ui/core";
+
 export default function AddFriend(props) {
   function addFriend({ name, age, email }) {
     axiosWithAuth

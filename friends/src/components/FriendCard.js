@@ -28,10 +28,7 @@ export default function FriendCard(props) {
   function deleteFriend() {
     axiosWithAuth
       .delete(`friends/${state.id}`)
-      .then(r => {
-        console.log(r);
-        return r;
-      })
+      //.then(r => { console.log(r); return r; })
       .then(r => props.setFriends(r.data))
       .catch(console.error);
   }

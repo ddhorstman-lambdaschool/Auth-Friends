@@ -12,7 +12,11 @@ export default function FriendsList() {
     axiosWithAuth
       .get("friends")
       .then(r => setFriends(r.data))
-      .then(() => setIsLoading(false));
+      .then(() => setIsLoading(false))
+      .catch(e => {
+        console.error(e);
+        setIsLoading(false);
+      });
   }, []);
 
   return isLoading ? (
