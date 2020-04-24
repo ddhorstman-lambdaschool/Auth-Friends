@@ -20,7 +20,7 @@ export default function FriendsList() {
   ) : (
     <Container>
       {friends.map(friend => (
-        <FriendCard key={friend.id} {...friend} />
+        <FriendCard key={friend.id} {...friend} setFriends={setFriends} />
       ))}
     </Container>
   );

@@ -10,23 +10,24 @@ const initialState = {
 };
 
 export default class FriendForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = props.editingExisting ? props : initialState;
+  state = initialState;
+
+  componentDidMount() {
+    this.props.editingExisting && this.setState(this.props);
   }
 
   handleChange = ({ target: { name, value } }) => {
     this.setState({ [name]: value });
   };
 
-  handleReset = (e) => {
+  handleReset = e => {
     e && e.preventDefault();
     this.state.editingExisting
       ? this.props.toggleEditing()
       : this.setState(initialState);
   };
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
     this.props.submitForm(this.state);
     this.handleReset();
