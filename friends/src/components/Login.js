@@ -31,7 +31,7 @@ export default class Login extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    axiosWithAuth
+    axiosWithAuth()
       .post("login", this.state)
       //.then(r => {console.log(r); return r;})
       .then(res => this.setToken(res.data.payload))
@@ -46,12 +46,8 @@ export default class Login extends React.Component {
   render() {
     return (
       <Container>
-        <Card style={{ margin: "auto", width: "50%", padding: "10px" }}>
-          <form
-            style={{ display: "flex", flexDirection: "column" }}
-            onSubmit={this.handleSubmit}
-            onReset={this.handleReset}
-          >
+        <Card className="login-form">
+          <form onSubmit={this.handleSubmit} onReset={this.handleReset}>
             <Typography variant="h3">Log in</Typography>
             <TextField
               required

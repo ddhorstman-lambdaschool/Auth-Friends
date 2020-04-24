@@ -18,15 +18,15 @@ export default function FriendCard(props) {
     setEditing(!editing);
   }
 
-  function updateFriend({ name, age, email, id }) {
-    axiosWithAuth
-      .put(`friends/${id}`, { name, age, email })
+  function updateFriend({ name, age, email }) {
+    axiosWithAuth()
+      .put(`friends/${state.id}`, { name, age, email })
       .then(r => setState(r.data.find(x => x.id === state.id)))
       .catch(console.error);
   }
 
   function deleteFriend() {
-    axiosWithAuth
+    axiosWithAuth()
       .delete(`friends/${state.id}`)
       //.then(r => { console.log(r); return r; })
       .then(r => props.setFriends(r.data))
@@ -34,7 +34,7 @@ export default function FriendCard(props) {
   }
 
   return (
-    <Card style={{ margin: "5px" }}>
+    <Card className="friend-card">
       <CardContent>
         {editing ? (
           <>
