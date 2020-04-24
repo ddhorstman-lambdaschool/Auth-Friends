@@ -1,23 +1,37 @@
 import React from "react";
 
 import axiosWithAuth from "../utils/axiosWithAuth";
+import axios from "axios";
 import { Container, LinearProgress } from "@material-ui/core";
 
 import FriendCard from "./FriendCard";
-import TokenContext from "../contexts/TokenContext";
 
 export default function FriendsList() {
   const [friends, setFriends] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   React.useEffect(() => {
+    let unmounted = false;
+    let source = axios.CancelToken.source();
+
     axiosWithAuth()
-      .get("friends")
-      .then(r => setFriends(r.data))
-      .then(() => setIsLoading(false))
-      .catch(e => {
-        console.error(e);
+      .get("friends", {
+        cancelToken: source.token,
+      })
+      .then(r => {
+        if (unmounted) return;
+        setFriends(r.data);
         setIsLoading(false);
+      })
+      .catch(e => {
+        !unmounted && setIsLoading(false);
+        axios.isCancel(e)
+          ? console.log(e.message)
+          : console.error(e);
       });
+    return () => {
+      unmounted = true;
+      source.cancel("FriendsList data fetching cancelled.");
+    };
   }, []);
 
   return isLoading ? (
