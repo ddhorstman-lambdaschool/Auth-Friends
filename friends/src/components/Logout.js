@@ -11,7 +11,7 @@ export default function Logout() {
     setToken(null);
     const timeout = window.setTimeout(() => setLoading(false), 1500);
     return () => window.clearTimeout(timeout);
-  }, []);
+  }, [setToken]);
 
   return loading ? (
     <>
