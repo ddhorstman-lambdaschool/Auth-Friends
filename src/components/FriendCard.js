@@ -34,7 +34,7 @@ export default function FriendCard(props) {
   }
 
   return (
-    <Card className="friend-card">
+    <Card className='friend-card'>
       <CardContent>
         {editing ? (
           <>
@@ -45,8 +45,8 @@ export default function FriendCard(props) {
               submitForm={updateFriend}
             />
             <Button
-              variant="contained"
-              color="secondary"
+              variant='contained'
+              color='secondary'
               onClick={deleteFriend}
             >
               Delete
@@ -54,10 +54,14 @@ export default function FriendCard(props) {
           </>
         ) : (
           <>
-            <Fab size="small" style={{ float: "right" }}>
-              <EditIcon onClick={toggleEditing} />
+            <Fab
+              size='small'
+              style={{ float: "right" }}
+              onClick={toggleEditing}
+            >
+              <EditIcon />
             </Fab>
-            <Typography variant="h3">{state.name}</Typography>
+            <Typography variant='h3'>{state.name}</Typography>
             <Typography>Age: {state.age}</Typography>
             <Link href={`mailto:${state.email}`}>{state.email}</Link>
           </>
