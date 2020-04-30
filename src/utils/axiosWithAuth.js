@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "http://localhost:5000/api/";
+const baseURL = "https://auth-friends-backend.herokuapp.com/api/";
 
 /**
  * A function to perform axios calls which automatically include
